@@ -1,5 +1,5 @@
 from customtkinter import*
-
+import CTkMessagebox
 
 
 
@@ -9,13 +9,15 @@ app.geometry("600x400")
 app.title("Conversion")
 
 
+
 def conversion():
 
     peso_value = pesoinput.get()
 
     if peso_value == "":
         dollarinput.delete(0, END)
-        dollarinput.insert(0, "Enter a value")
+        msg =CTkMessagebox.CTkMessagebox(title="Error", message="Input is not valid please try again", icon="cancel")
+
         return
     peso_value = float(peso_value)
 
