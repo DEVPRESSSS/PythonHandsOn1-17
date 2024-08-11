@@ -4,87 +4,47 @@ import CTkMessagebox
 app = CTk()
 
 app.geometry("600x400")
-app.title("Simple Calculator")
+app.title("Aircraft")
 
-# Validation function to allow only numeric input
 def validate_input(value):
     if value.isdigit() or value == "":
         return True
     return False
 
-# Operations
-def add():
-    perform_operation("+")
+def categorize_number(*args):
+    number = number_input.get()
 
-def subtract():
-    perform_operation("-")
+    if number:
+        number = int(number)
 
-def multiply():
-    perform_operation("*")
+        if number <= 499:
+            result_text = "Bird"
+        elif number >= 500 and number <= 1100:
+            result_text = "Military"
+        else:
+            result_text = "Civilian"
 
-def divide():
-    perform_operation("/")
-
-# Perform the selected operation
-def perform_operation(operation):
-    first_value = pesoinput.get()
-    second_value = dollarinput.get()
-
-    if first_value == "" or second_value == "":
-        msg = CTkMessagebox.CTkMessagebox(title="Error", message="Please fill in both numbers.", icon="cancel")
-        return
-    
-    try:
-        first_value = float(first_value)
-        second_value = float(second_value)
-        
-        if operation == "+":
-            result = first_value + second_value
-        elif operation == "-":
-            result = first_value - second_value
-        elif operation == "*":
-            result = first_value * second_value
-        elif operation == "/":
-            if second_value == 0:
-                msg = CTkMessagebox.CTkMessagebox(title="Error", message="Division by zero is not allowed.", icon="cancel")
-                return
-            result = first_value / second_value
-        
-        result_input.configure(state="normal")
-        result_input.delete(0, END)
-        result_input.insert(0, result)
-        result_input.configure(state="disabled")
-
-    except ValueError:
-        msg = CTkMessagebox.CTkMessagebox(title="Error", message="Input is not valid. Please enter numeric values only.", icon="cancel")
+        result.configure(state="normal")
+        result.delete(0, END)
+        result.insert(0, result_text)
+        result.configure(state="disabled")
+    else:
+        result.configure(state="normal")
+        result.delete(0, END)
+        result.configure(state="disabled")
 
 vcmd = app.register(validate_input)
 
-peso = CTkLabel(master=app, text="First Number:")
-peso.place(relx=0.4, rely=0.25)
+number_label = CTkLabel(master=app, text="Number:")
+number_label.place(relx=0.3, rely=0.3)
 
-pesoinput = CTkEntry(master=app, width=100, validate="key", validatecommand=(vcmd, '%P'))
-pesoinput.place(relx=0.4, rely=0.3)
+number_input = CTkEntry(master=app, width=100, validate="key", validatecommand=(vcmd, '%P'))
+number_input.place(relx=0.4, rely=0.3)
+number_input.bind('<KeyRelease>', categorize_number)  
+type_label = CTkLabel(master=app, text="Type:")
+type_label.place(relx=0.3, rely=0.43)
 
-dollar = CTkLabel(master=app, text="Second Number:")
-dollar.place(relx=0.4, rely=0.38)
-
-dollarinput = CTkEntry(master=app, width=100, validate="key", validatecommand=(vcmd, '%P'))
-dollarinput.place(relx=0.4, rely=0.43)
-
-convert_plus = CTkButton(master=app, text="+", width=40, command=add)
-convert_plus.place(relx=0.5, rely=0.52)
-
-convert_minus = CTkButton(master=app, text="-", width=40, command=subtract)
-convert_minus.place(relx=0.4, rely=0.52)
-
-convert_multiply = CTkButton(master=app, text="*", width=40, command=multiply)
-convert_multiply.place(relx=0.5, rely=0.6)
-
-convert_divide = CTkButton(master=app, text="/", width=40, command=divide)
-convert_divide.place(relx=0.4, rely=0.6)
-
-result_input = CTkEntry(master=app, width=100, state="disabled")
-result_input.place(relx=0.4, rely=0.68)
+result = CTkEntry(master=app, width=100, state="disabled")
+result.place(relx=0.4, rely=0.43)
 
 app.mainloop()
