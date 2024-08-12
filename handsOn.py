@@ -5,13 +5,16 @@ app = CTk()
 app.geometry("600x400")
 app.title("Earthquake")
 
-my_list = [5,4,3,2,1]
-
+my_list = [1,2,3,4,5]
+new_list=[]
 def reverse():
-    my_list.reverse()
+    for x in my_list:
+
+        result = x * x
+        new_list.append(result)
 
     textBox2.configure(state="normal")
-    textBox2.insert("1.0", "\n".join(map(str, my_list))) 
+    textBox2.insert("1.0", "\n".join(map(str, new_list))) 
 
     textBox2.configure(state="disabled")
 
