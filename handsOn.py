@@ -4,25 +4,27 @@ import CTkMessagebox
 app = CTk()
 
 app.geometry("600x400")
-app.title("Aircraft")
+app.title("Military")
 
 def validate_input(value):
-    if value.isdigit() or value == "":
+    if value.isalpha() or value == "":
         return True
     return False
 
 def categorize_number(*args):
-    number = number_input.get()
+    ship = ship_input.get()
 
-    if number:
-        number = int(number)
+    if ship:
+        ship = ship.lower()
 
-        if number <= 499:
-            result_text = "Bird"
-        elif number >= 500 and number <= 1100:
-            result_text = "Military"
+        if ship == "b":
+            result_text = "Battleship"
+        elif ship == "c":
+            result_text = "Cruiship"
+        elif ship == "d":
+            result_text = "Destroyer"
         else:
-            result_text = "Civilian"
+            result_text = "No info"
 
         result.configure(state="normal")
         result.delete(0, END)
@@ -35,12 +37,12 @@ def categorize_number(*args):
 
 vcmd = app.register(validate_input)
 
-number_label = CTkLabel(master=app, text="Number:")
+number_label = CTkLabel(master=app, text="Letter:")
 number_label.place(relx=0.3, rely=0.3)
 
-number_input = CTkEntry(master=app, width=100, validate="key", validatecommand=(vcmd, '%P'))
-number_input.place(relx=0.4, rely=0.3)
-number_input.bind('<KeyRelease>', categorize_number)  
+ship_input = CTkEntry(master=app, width=100, validate="key", validatecommand=(vcmd, '%P'))
+ship_input.place(relx=0.4, rely=0.3)
+ship_input.bind('<KeyRelease>', categorize_number)  
 type_label = CTkLabel(master=app, text="Type:")
 type_label.place(relx=0.3, rely=0.43)
 
