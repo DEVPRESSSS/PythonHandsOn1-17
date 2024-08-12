@@ -5,32 +5,28 @@ app = CTk()
 app.geometry("600x400")
 app.title("Earthquake")
 
-my_list = [1,2,3,4,5]
-new_list=[]
-def reverse():
-    for x in my_list:
+new_list= []
 
-        result = x * x
+def reverse():
+    for x in range( 1, 9):
+
+        result = x * 3
         new_list.append(result)
 
-    textBox2.configure(state="normal")
-    textBox2.insert("1.0", "\n".join(map(str, new_list))) 
 
-    textBox2.configure(state="disabled")
+    textBox1.configure(state="normal")
+    textBox1.insert("1.0", "\n".join(map(str, new_list))) 
+
+    textBox1.configure(state="disabled")
 
    
 
 
 
-textBox1 = CTkTextbox(master=app, height=100, width=80,font=("Tahoma",10))
+textBox1 = CTkTextbox(master=app, height=120, width=100,font=("Tahoma",10))
 textBox1.place(relx=0.3, rely=0.4)
 
-textBox1.configure(state="normal")
-textBox1.insert("1.0", "\n".join(map(str, my_list))) 
-textBox1.configure(state="disabled")
 
-textBox2 = CTkTextbox(master=app, height=100, width=80,font=("Tahoma",10))
-textBox2.place(relx=0.5, rely=0.4)
 
 run_btn = CTkButton(master=app, text="Run", width=75, command=reverse)
 run_btn.place(relx=0.3, rely=0.25)
