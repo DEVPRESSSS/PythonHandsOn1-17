@@ -13,7 +13,7 @@ def reverse():
         result = x * 3
         new_list.append(result)
 
-
+    new_list.reverse()
     textBox1.configure(state="normal")
     textBox1.insert("1.0", "\n".join(map(str, new_list))) 
 
