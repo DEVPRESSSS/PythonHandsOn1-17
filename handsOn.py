@@ -22,40 +22,45 @@ def IdVak(value):
      return False
 
 
-def add():
-    text1 = textBox1.get()
-    text2 = textBox2.get()
-    text3 = textBox3.get()
+def delete():
 
-
+    msg = CTkMessagebox.CTkMessagebox(title="Confirmation", message="Do you want to delete this record?",
+                        icon="question", option_1="Cancel", option_2="No", option_3="Yes")
+    response = msg.get()
     
-    if text1 and text2 and text3:
-        try:
-            conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                                  'SERVER=REJIE\\SQLEXPRESS;'
-                                  'DATABASE=cafe;'
-                                  'Trusted_Connection=yes;')
-            
-            cursor = conn.cursor()
-            
-            sql = "UPDATE Student SET Name = ?, Program = ? WHERE Id= ?"
-            cursor.execute(sql, text1,text2,text3)
-            
-            conn.commit()
-            
-            conn.close()
-
-            CTkMessagebox.CTkMessagebox(title="Success", message="Data updated successfully!",icon="check")
-            textBox1.delete(0,END)
-            textBox2.delete(0,END)
-            textBox3.delete(0,END)
+    if response=="Yes":
+   
+            text3 = textBox3.get()
 
 
+            
+            if text3:
+                try:
+                    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
+                                        'SERVER=REJIE\\SQLEXPRESS;'
+                                        'DATABASE=cafe;'
+                                        'Trusted_Connection=yes;')
+                    
+                    cursor = conn.cursor()
+                    
+                    sql = "DELETE FROM Student where Id= ?"
+                    cursor.execute(sql,text3)
+                    
+                    conn.commit()
+                    
+                    conn.close()
 
-        except Exception as e:
-            CTkMessagebox.CTkMessagebox(title="Error", message="Something went wrong!",icon="cancel")
-    else:
-            msg= CTkMessagebox.CTkMessagebox(title="Error", message="Please input a value",icon="cancel")
+                    CTkMessagebox.CTkMessagebox(title="Success", message="Data deleted successfully!",icon="check")
+                    textBox1.delete(0,END)
+                    textBox2.delete(0,END)
+                    textBox3.delete(0,END)
+
+
+
+                except Exception as e:
+                    CTkMessagebox.CTkMessagebox(title="Error", message="Something went wrong!",icon="cancel")
+            else:
+                    msg= CTkMessagebox.CTkMessagebox(title="Error", message="Please input a value",icon="cancel")
 
 
 
@@ -82,7 +87,7 @@ label2.place(relx=0.2,rely=0.48)
 textBox2 = CTkEntry(master=app, height=40, font=("Tahoma", 12))
 textBox2.place(relx=0.3, rely=0.5)
 
-move_btn = CTkButton(master=app, text="INSERT", width=75, command=add)
+move_btn = CTkButton(master=app, text="DELETE", width=75, command=delete)
 move_btn.place(relx=0.3, rely=0.25)
 
 app.mainloop()
