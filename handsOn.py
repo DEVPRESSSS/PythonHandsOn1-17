@@ -5,7 +5,7 @@ app = CTk()
 app.geometry("600x400")
 app.title("Earthquake")
 
-my_list = [1, 2, 3, 4, 5]
+my_list = [5,4,3,2,1]
 
 def reverse():
     my_list.reverse()
@@ -15,7 +15,7 @@ def reverse():
 
     textBox2.configure(state="disabled")
 
-
+   
 
 
 
