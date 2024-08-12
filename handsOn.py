@@ -1,48 +1,60 @@
-import CTkMessagebox
+import pyodbc
 from customtkinter import *
+import CTkMessagebox
 
 app = CTk()
 
 app.geometry("600x400")
 app.title("Earthquake")
 
-new_list = ["hey", "heyss", "heysss"]
-move_list = []
+def validate(value):
 
-def move():
-    try:
-        selected_text = textBox1.get("sel.first", "sel.last").strip()
-    except:
-        selected_text = ""
+    if value.isalpha() or value== "":
+        return True
+    
+    return False
+def add():
+    text1 = textBox1.get()
+    text2 = textBox2.get()
 
-    if selected_text == "":
-        msg = CTkMessagebox.CTkMessagebox(title="Error", message="Please select an item to move.", icon="cancel")
-        return
 
-    if selected_text in new_list:
-        move_list.append(selected_text) 
-        new_list.remove(selected_text)   
-        
-        textBox1.configure(state="normal")
-        textBox1.delete("1.0", "end")
-        textBox1.insert("1.0", "\n".join(map(str, new_list)))
-        textBox1.configure(state="disabled")
+    
+    if text1 and text2:
+        try:
+            conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
+                                  'SERVER=REJIE\\SQLEXPRESS;'
+                                  'DATABASE=cafe;'
+                                  'Trusted_Connection=yes;')
+            
+            cursor = conn.cursor()
+            
+            sql = "INSERT INTO Student (Name, Program) VALUES (?,?)"
+            cursor.execute(sql, text1,text2)
+            
+            conn.commit()
+            
+            conn.close()
 
-        textBox2.configure(state="normal")
-        textBox2.delete("1.0", "end")
-        textBox2.insert("1.0", "\n".join(map(str, move_list)))
-        textBox2.configure(state="disabled")
+            CTkMessagebox.CTkMessagebox(title="Success", message="Data inserted successfully!",icon="check")
+            textBox1.delete(0,END)
+            textBox2.delete(0,END)
+
+
+        except Exception as e:
+            CTkMessagebox.CTkMessagebox(title="Error", message="Something went wrong!",icon="cancel")
     else:
-        msg = CTkMessagebox.CTkMessagebox(title="Error", message="Selected item not found in the list.", icon="cancel")
+            msg= CTkMessagebox.CTkMessagebox(title="Error", message="Please input a value",icon="cancel")
 
-textBox1 = CTkTextbox(master=app, height=120, width=100, font=("Tahoma", 12))
-textBox1.place(relx=0.3, rely=0.45)
-textBox1.insert("1.0", "\n".join(map(str, new_list)))
 
-textBox2 = CTkTextbox(master=app, height=120, width=100, font=("Tahoma", 12), state="disabled")
-textBox2.place(relx=0.5, rely=0.45)
 
-move_btn = CTkButton(master=app, text="Move", width=75, command=move)
+vcmd= app.register(validate)
+textBox1 = CTkEntry(master=app, height=40, font=("Tahoma", 12),validate="key",validatecommand=(vcmd,'%P'))
+textBox1.place(relx=0.3, rely=0.35)
+
+textBox2 = CTkEntry(master=app, height=40, font=("Tahoma", 12))
+textBox2.place(relx=0.3, rely=0.47)
+
+move_btn = CTkButton(master=app, text="INSERT", width=75, command=add)
 move_btn.place(relx=0.3, rely=0.25)
 
 app.mainloop()
