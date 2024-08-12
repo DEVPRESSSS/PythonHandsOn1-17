@@ -5,6 +5,7 @@ Before running the project, you need to install the following Python packages:
 
 - `customtkinter` for custom-styled tkinter widgets
 - `pyodbc` for connecting to ODBC databases
+- `CTkMessagebox` for connecting messageBox
 
 You can install these dependencies using `pip`. Here's how:
 
